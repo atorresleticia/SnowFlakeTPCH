@@ -496,9 +496,9 @@ public class TPCHQueries {
         sql = "select\n"
                 + "        100.00 * sum(case\n"
                 + "                when p_type like 'PROMO%'\n"
-                + "                        then l_extendedprice * (1 - l_discount)\n"
+                + "                        then l_extendedprice + 0.0 * (1 - l_discount) + 0.0\n"
                 + "                else 0\n"
-                + "        end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue\n"
+                + "        end) / sum(l_extendedprice + 0.0 * (1 - l_discount) + 0.0) as promo_revenue\n"
                 + "from\n"
                 + "        lineitem,\n"
                 + "        part\n"
@@ -509,8 +509,9 @@ public class TPCHQueries {
         executeQuery(sql);
     }
 
-    public void query15() {
+    public void query15() throws SQLException {
         String sql;
+        Statement st = null;
         sql = "create view revenue0 (supplier_no, total_revenue) as\n"
                 + "        select\n"
                 + "                l_suppkey,\n"
@@ -521,32 +522,35 @@ public class TPCHQueries {
                 + "                l_shipdate >= date '1996-01-01'\n"
                 + "                and l_shipdate < date '1996-01-01' + interval '3' month\n"
                 + "        group by\n"
-                + "                l_suppkey;\n"
-                + "\n"
-                + "\n"
-                + "select\n"
-                + "        s_suppkey,\n"
-                + "        s_name,\n"
-                + "        s_address,\n"
-                + "        s_phone,\n"
-                + "        total_revenue\n"
-                + "from\n"
-                + "        supplier,\n"
-                + "        revenue0\n"
-                + "where\n"
-                + "        s_suppkey = supplier_no\n"
-                + "        and total_revenue = (\n"
-                + "                select\n"
-                + "                        max(total_revenue)\n"
-                + "                from\n"
-                + "                        revenue0\n"
-                + "        )\n"
-                + "order by\n"
-                + "        s_suppkey;";
-        executeQuery(sql);
-
-        sql = "drop view revenue0;";
-        executeQuery(sql);
+                + "                l_suppkey;";
+        try {
+            st = con.createStatement();
+            st.executeUpdate(sql);
+            
+            sql = "select\n"
+                    + "        s_suppkey,\n"
+                    + "        s_name,\n"
+                    + "        s_address,\n"
+                    + "        s_phone,\n"
+                    + "        total_revenue\n"
+                    + "from\n"
+                    + "        supplier,\n"
+                    + "        revenue0\n"
+                    + "where\n"
+                    + "        s_suppkey = supplier_no\n"
+                    + "        and total_revenue = (\n"
+                    + "                select\n"
+                    + "                        max(total_revenue)\n"
+                    + "                from\n"
+                    + "                        revenue0\n"
+                    + "        )\n"
+                    + "order by\n"
+                    + "        s_suppkey;";
+            executeQuery(sql);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(TPCHQueries.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void query16() {
