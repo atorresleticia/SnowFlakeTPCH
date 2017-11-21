@@ -20,9 +20,9 @@ import java.util.logging.Logger;
  */
 public class RefreshFunctionTime {
 
-    private RefreshFunction1 rf1;
-    private RefreshFunction2 rf2;
-    private double[] rfTimes;
+    private final RefreshFunction1 rf1;
+    private final RefreshFunction2 rf2;
+    private final double[] rfTimes;
 
     public RefreshFunctionTime() {
         this.rf1 = new RefreshFunction1();

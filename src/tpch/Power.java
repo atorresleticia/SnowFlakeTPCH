@@ -39,13 +39,13 @@ public class Power {
         rfT.getRF2().getIndexes(path);
         
         rfT.runRF1();
-        tpchQT.run();
+        //tpchQT.run();
         rfT.runRF2();
     }
     
     public void saveTimes(){
-        String rfFileName = String.format("SNOW_POWER_RF_%dGB", this.sf);
-        String queriesFileName = String.format("SNOW_POWER_QUERIES_%dGB", this.sf);
+        String rfFileName = String.format("SNOW_POWER_RF_%dGB", 1);
+        String queriesFileName = String.format("SNOW_POWER_QUERIES_%dGB", 1);
         
         rfT.saveRFTime(rfFileName);
         tpchQT.saveQueriesTime(queriesFileName);

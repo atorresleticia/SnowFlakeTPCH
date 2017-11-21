@@ -19,10 +19,10 @@ import queries.TPCHQueriesTime;
 public class TPCH {
 
     // mysql, monetdb, postgresql
-    static String SGBD = "mysql";
+    static String SGBD = "monetdb";
     static String DB = "tpch1";
-    static String user = "root";
-    static String password = "mysql";
+    static String user = "monetdb";
+    static String password = "monetdb";
 
     public static void main(String[] args) throws IOException, SQLException {
 

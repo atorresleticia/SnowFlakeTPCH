@@ -23,19 +23,20 @@ import nl.cwi.monetdb.mcl.io.BufferedMCLReader;
  */
 public class RefreshFunction2 {
 
-    private ArrayList indexedToDelete;
+    private ArrayList indexesToDelete;
     private Connection con;
 
     public RefreshFunction2() {
+        this.indexesToDelete = new ArrayList();
     }
 
     public RefreshFunction2(ArrayList indexedToDelete) {
-        this.indexedToDelete = indexedToDelete;
+        this.indexesToDelete = indexedToDelete;
     }
 
     public RefreshFunction2(Connection con) {
         this.con = con;
-        this.indexedToDelete = new ArrayList();
+        this.indexesToDelete = new ArrayList();
     }
 
     public Connection getConnection() {
@@ -51,12 +52,9 @@ public class RefreshFunction2 {
 
         try {
             br = new BufferedMCLReader(new FileReader(path));
-            String currentInt;
-            int i = 0;
-            while ((currentInt = br.readLine()) != null) {
-                this.indexedToDelete.add(Integer.parseInt(currentInt));
-                System.out.println(i + " - " + this.indexedToDelete.get(i));
-                i++;
+            String ptr;
+            while ((ptr = br.readLine()) != null) {
+                this.indexesToDelete.add(Integer.parseInt(ptr));
             }
 
         } catch (FileNotFoundException ex) {
@@ -76,11 +74,11 @@ public class RefreshFunction2 {
         Statement st = null;
         try {
             st = this.con.createStatement();
-            for (int i = 0; i < this.indexedToDelete.size(); i++) {
-                String sql = String.format("DELETE FROM lineitem WHERE l_orderkey = %d", this.indexedToDelete.get(i));
-                st.executeQuery(sql);
-                sql = String.format("DELETE FROM orders WHERE o_orderkey = %d", this.indexedToDelete.get(i));
-                st.executeUpdate(sql);
+            for (int i = 0; i < this.indexesToDelete.size(); i++) {
+                String sql = String.format("DELETE FROM lineitem WHERE l_orderkey = %d", this.indexesToDelete.get(i));
+                st.executeUpdate(sql);      
+                sql = String.format("DELETE FROM orders WHERE o_orderkey = %d", this.indexesToDelete.get(i));
+                st.executeUpdate(sql);          
             }
         } catch (SQLException ex) {
             Logger.getLogger(RefreshFunction2.class.getName()).log(Level.SEVERE, null, ex);
