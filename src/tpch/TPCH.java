@@ -20,7 +20,7 @@ public class TPCH {
 
     // mysql, monetdb, postgresql
     static String SGBD = "monetdb";
-    static String DB = "tpch1";
+    static String DB = "demo";
     static String user = "monetdb";
     static String password = "monetdb";
 
@@ -30,15 +30,14 @@ public class TPCH {
         Connection con = cf.getConnection();
         System.out.println("Connected to " + SGBD + " - " + DB);
         
-        Power p = new Power(con, 1);
-        p.run();
-        p.saveTimes();
+        ///Power p = new Power(con, 1);
+        //p.run();
+        //p.saveTimes();
         
-        //TPCHQueriesTime tpchQT = new TPCHQueriesTime();
-        //tpchQT.getTpchq().setConnection(con);
-        //RefreshFunction2 rf2 = new RefreshFunction2();
-        //rf2.getIndexes("D:\\TPCH\\DATA\\ORIGINAL\\RF\\1GB\\delete.1");
-        //tpchQT.run();
-        //tpchQT.saveQueriesTime("queries_time.txt");
+        Throughput t = new Throughput(con, 1);
+        t.run();
+        
+        //con.close();
+        
     }
 }

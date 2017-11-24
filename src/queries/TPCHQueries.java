@@ -37,7 +37,7 @@ public class TPCHQueries {
     }
     
     public void runQueries(){
-        query1();
+//        query1();
         query2();
         query3();
         query4();
@@ -71,20 +71,20 @@ public class TPCHQueries {
             rs = st.executeQuery(sql);
             ResultSetMetaData md = rs.getMetaData();
             while (rs.next()) {
-                for (int j = 1; j <= md.getColumnCount(); j++) {
-                    System.out.print(rs.getString(j) + "\t");
-                }
-                System.out.println("");
+                //for (int j = 1; j <= md.getColumnCount(); j++) {
+                //    System.out.print(rs.getString(j) + "\t");
+                //}
+                //System.out.println("");
             }
         } catch (SQLException ex) {
             Logger.getLogger(TPCHQueries.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                st.close();
-                rs.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(TPCHQueries.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            //try {
+                //st.close();
+                //rs.close();
+            //} catch (SQLException ex) {
+              //  Logger.getLogger(TPCHQueries.class.getName()).log(Level.SEVERE, null, ex);
+            //}
         }
 
     }
@@ -323,7 +323,7 @@ public class TPCHQueries {
                 + "        (\n"
                 + "                select\n"
                 + "                        extract(year from o_orderdate) as o_year,\n"
-                + "                        l_extendedprice * (1 - l_discount) as volume,\n"
+                + "                        cast(l_extendedprice as double precision) * cast((1 - l_discount) as double precision) as volume,\n"
                 + "                        n2.n_name as nation\n"
                 + "                from\n"
                 + "                        part,\n"
@@ -521,9 +521,9 @@ public class TPCHQueries {
         sql = "select\n"
                 + "        100.00 * sum(case\n"
                 + "                when p_type like 'PROMO%'\n"
-                + "                        then l_extendedprice + 0.0 * (1 - l_discount) + 0.0\n"
+                + "                        then cast(l_extendedprice as double precision) * cast((1 - l_discount) as double precision)\n"
                 + "                else 0\n"
-                + "        end) / sum(l_extendedprice + 0.0 * (1 - l_discount) + 0.0) as promo_revenue\n"
+                + "        end) / sum(cast(l_extendedprice as double precision) * cast((1 - l_discount) as double precision)) as promo_revenue\n"
                 + "from\n"
                 + "        lineitem,\n"
                 + "        part\n"
@@ -554,11 +554,11 @@ public class TPCHQueries {
         } catch (SQLException ex) {
             Logger.getLogger(TPCHQueries.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
+            /*try {
                 st.close();
             } catch (SQLException ex) {
                 Logger.getLogger(TPCHQueries.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         }
 
         sql = "select\n"
@@ -587,7 +587,7 @@ public class TPCHQueries {
         try {
             st = con.createStatement();
             st.executeUpdate(sql);
-            st.close();
+            //st.close();
         } catch (SQLException ex) {
             Logger.getLogger(TPCHQueries.class.getName()).log(Level.SEVERE, null, ex);
         }

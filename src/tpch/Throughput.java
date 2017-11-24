@@ -11,7 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.sql.Connection;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -34,7 +33,7 @@ public class Throughput {
     private final TPCHQueries tpchq;
     private Map<Integer, Integer> stream;
 
-    public Throughput(int sf, Connection con) {
+    public Throughput(Connection con, int sf) {
         initMap();
         this.sf = sf;
         this.con = con;
@@ -43,7 +42,6 @@ public class Throughput {
         this.tpchq = new TPCHQueries();
 
         setConnection();
-
     }
 
     public final void initMap() {
@@ -52,6 +50,7 @@ public class Throughput {
         this.stream.put(1, 2);
         this.stream.put(10, 3);
         this.stream.put(30, 4);
+
     }
 
     public final int getNoOfStreams() {
@@ -62,6 +61,7 @@ public class Throughput {
         this.rf1.setConnection(this.con);
 
         for (int i = 0; i < getNoOfStreams(); i++) {
+            this.rf2[i] = new RefreshFunction2();
             this.rf2[i].setConnection(this.con);
             this.rf2[i].getIndexes(String.format("D:\\TPCH\\DATA\\ORIGINAL\\RF\\%dGB\\delete.%d", this.sf, i + 1));
         }
@@ -71,151 +71,161 @@ public class Throughput {
 
     public void sf1Stream() {
 
-        // Thread for stream 1
-        new Thread(() -> {
-
+        Runnable r1 = () -> {
             tpchq.runQueries();
             System.out.println("Query stream 1 finished.");
+        };
 
-        }).start();
-
-        new Thread(() -> {
-
+        Runnable r2 = () -> {
             tpchq.runQueries();
             System.out.println("Query stream 2 finished.");
+        };
 
-        }).start();
-
-        new Thread(() -> {
-
-            rf1.update(1);
-            rf2[0].delete();
-
-            rf1.update(2);
-            rf2[1].delete();
+        Runnable r3 = () -> {
+            for (int i = 0; i < getNoOfStreams(); i++) {
+                rf1.update(i + 1);
+                rf2[i].delete();
+            }
 
             System.out.println("RF stream finished.");
+        };
 
-        }).start();
+        Thread t1 = new Thread(r1);
+        Thread t2 = new Thread(r2);
+        Thread t3 = new Thread(r3);
+
+        t1.start();
+        t2.start();
+        t3.start();
+
+        long startTime = System.nanoTime();
+
+        try {
+            t1.join();
+            t2.join();
+            t3.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Throughput.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        long endTime = System.nanoTime();
+
+        saveTime((endTime - startTime) / 1000000.);
+
     }
 
     public void sf10Stream() {
 
-        // Thread for stream 1
-        new Thread(() -> {
-
+        Runnable r1 = () -> {
             tpchq.runQueries();
             System.out.println("Query stream 1 finished.");
+        };
 
-        }).start();
-
-        new Thread(() -> {
-
+        Runnable r2 = () -> {
             tpchq.runQueries();
             System.out.println("Query stream 2 finished.");
+        };
 
-        }).start();
-
-        new Thread(() -> {
-
+        Runnable r3 = () -> {
             tpchq.runQueries();
             System.out.println("Query stream 3 finished.");
+        };
 
-        }).start();
-
-        new Thread(() -> {
-
-            rf1.update(1);
-            rf2[0].delete();
-
-            rf1.update(2);
-            rf2[1].delete();
-
-            rf1.update(3);
-            rf2[2].delete();
+        Runnable r4 = () -> {
+            for (int i = 0; i < getNoOfStreams(); i++) {
+                rf1.update(i + 1);
+                rf2[i].delete();
+            }
 
             System.out.println("RF stream finished.");
+        };
 
-        }).start();
+        Thread t1 = new Thread(r1);
+        Thread t2 = new Thread(r2);
+        Thread t3 = new Thread(r3);
+        Thread t4 = new Thread(r4);
+
+        t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
+
+        long startTime = System.nanoTime();
+
+        try {
+            t1.join();
+            t2.join();
+            t3.join();
+            t4.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Throughput.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        long endTime = System.nanoTime();
+
+        saveTime((endTime - startTime) / 1000000.);
+
     }
 
     public void sf30Stream() {
 
-        // Thread for stream 1
-        new Thread(() -> {
-
+        Runnable r1 = () -> {
             tpchq.runQueries();
             System.out.println("Query stream 1 finished.");
+        };
 
-        }).start();
-
-        new Thread(() -> {
-
+        Runnable r2 = () -> {
             tpchq.runQueries();
             System.out.println("Query stream 2 finished.");
+        };
 
-        }).start();
-
-        new Thread(() -> {
-
+        Runnable r3 = () -> {
             tpchq.runQueries();
             System.out.println("Query stream 3 finished.");
+        };
 
-        }).start();
-
-        new Thread(() -> {
-
+        Runnable r4 = () -> {
             tpchq.runQueries();
             System.out.println("Query stream 4 finished.");
+        };
 
-        }).start();
-
-        new Thread(() -> {
-
-            rf1.update(1);
-            rf2[0].delete();
-
-            rf1.update(2);
-            rf2[1].delete();
-
-            rf1.update(3);
-            rf2[2].delete();
-
-            rf1.update(4);
-            rf2[3].delete();
+        Runnable r5 = () -> {
+            for (int i = 0; i < getNoOfStreams(); i++) {
+                rf1.update(i + 1);
+                rf2[i].delete();
+            }
 
             System.out.println("RF stream finished.");
+        };
 
-        }).start();
-    }
+        Thread t1 = new Thread(r1);
+        Thread t2 = new Thread(r2);
+        Thread t3 = new Thread(r3);
+        Thread t4 = new Thread(r4);
+        Thread t5 = new Thread(r5);
 
-    public void sf1StreamTime() {
+        t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
+        t5.start();
 
         long startTime = System.nanoTime();
-        sf1Stream();
+
+        try {
+            t1.join();
+            t2.join();
+            t3.join();
+            t4.join();
+            t5.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Throughput.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         long endTime = System.nanoTime();
 
         saveTime((endTime - startTime) / 1000000.);
-    }
 
-    public void sf10StreamTime() {
-
-        long startTime = System.nanoTime();
-        sf10Stream();
-        long endTime = System.nanoTime();
-
-        saveTime((endTime - startTime) / 1000000.);
-    }
-
-    public void sf30StreamTime() {
-
-        long startTime = System.nanoTime();
-        sf30Stream();
-        long endTime = System.nanoTime();
-
-        System.out.println("RF1 done.");
-
-        saveTime((endTime - startTime) / 1000000.);
     }
 
     public void saveTime(double time) {
@@ -234,13 +244,13 @@ public class Throughput {
     public void run() {
         switch (this.sf) {
             case 1:
-                sf1StreamTime();
+                sf1Stream();
                 break;
             case 10:
-                sf10StreamTime();
+                sf10Stream();
                 break;
             case 30:
-                sf30StreamTime();
+                sf30Stream();
                 break;
             default:
                 System.out.println("Invalid scale factor. Possibilities are 1, 10 or 30.");
