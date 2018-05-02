@@ -66,6 +66,10 @@ public class RefreshFunctionTime {
     public void runRF2(){
         this.rfTimes[1] = getRF2Time();
     }
+
+    public double[] getTimes() {
+        return this.rfTimes;
+    }
     
     public void saveRFTime(String file){
         try (BufferedWriter queriesTimesIO = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true)))) { 

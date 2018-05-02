@@ -25,36 +25,33 @@ public class TPCHQueriesTime {
 
     public TPCHQueriesTime() {
         this.tpchq = new TPCHQueries();
-        this.tpchTimes = new double[22];
+        this.tpchTimes = new double[15];
     }
 
     public TPCHQueries getTpchq() {
-        return tpchq;
+        return this.tpchq;
     }
 
     public void run() {
-        tpchTimes[0] = this.getQuery1Time();
-        tpchTimes[1] = this.getQuery2Time();
-        tpchTimes[2] = this.getQuery3Time();
-        tpchTimes[3] = this.getQuery4Time();
-        tpchTimes[4] = this.getQuery5Time();
-        tpchTimes[5] = this.getQuery6Time();
-        tpchTimes[6] = this.getQuery7Time();
-        tpchTimes[7] = this.getQuery8Time();
-        tpchTimes[8] = this.getQuery9Time();
-        tpchTimes[9] = this.getQuery10Time();
-        tpchTimes[10] = this.getQuery11Time();
-        tpchTimes[11] = this.getQuery12Time();
-        tpchTimes[12] = this.getQuery13Time();
-        tpchTimes[13] = this.getQuery14Time();
-        tpchTimes[14] = this.getQuery15Time();
-        tpchTimes[15] = this.getQuery16Time();
-        tpchTimes[16] = this.getQuery17Time();
-        tpchTimes[17] = this.getQuery18Time();
-        tpchTimes[18] = this.getQuery19Time();
-        tpchTimes[19] = this.getQuery20Time();
-        tpchTimes[20] = this.getQuery21Time();
-        tpchTimes[21] = this.getQuery22Time();
+        tpchTimes[0] = this.getQuery3Time();
+        tpchTimes[1] = this.getQuery5Time();
+        tpchTimes[2] = this.getQuery6Time();
+        tpchTimes[3] = this.getQuery7Time();
+        tpchTimes[4] = this.getQuery8Time();
+        tpchTimes[5] = this.getQuery9Time();
+        tpchTimes[6] = this.getQuery10Time();
+        tpchTimes[7] = this.getQuery11Time();
+        tpchTimes[8] = this.getQuery12Time();
+        tpchTimes[9] = this.getQuery13Time();
+        tpchTimes[10] = this.getQuery14Time();
+        tpchTimes[11] = this.getQuery16Time();
+        tpchTimes[12] = this.getQuery18Time();
+        tpchTimes[13] = this.getQuery19Time();
+        tpchTimes[14] = this.getQuery22Time();
+    }
+
+    public double[] getTimes() {
+        return this.tpchTimes;
     }
 
     public void saveQueriesTime(String file) {

@@ -20,8 +20,14 @@ public class ConnectionFactory {
     private final String user;
     private final String password;
 
-    public ConnectionFactory(String SGBD, String DB, String user, String password) {
-        this.url = "jdbc:" + SGBD + "://localhost/" + DB;
+    public ConnectionFactory(String sgbd, String db, String user, String password, String host, String port) {
+        this.url = String.format("jdbc:%s://%s:%s/%s", sgbd, host, port, db);
+        this.user = user;
+        this.password = password;
+    }
+
+    public ConnectionFactory(String sgbd, String db, String user, String password, String host) {
+        this.url = "jdbc:" + sgbd + "://" + host + "/" + db;
         this.user = user;
         this.password = password;
     }
@@ -35,7 +41,7 @@ public class ConnectionFactory {
     public Connection getConnection(){
         
         Connection con = null;
-        
+
         try {
             con = DriverManager.getConnection(url, user, password);
         } catch (SQLException ex) {

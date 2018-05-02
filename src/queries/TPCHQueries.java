@@ -37,28 +37,36 @@ public class TPCHQueries {
     }
     
     public void runQueries(){
-//        query1();
-        query2();
         query3();
+        System.out.println("Q3 done");
         query4();
-        query5();
+        System.out.println("Q5 done");
         query6();
+        System.out.println("Q6 done");
         query7();
+        System.out.println("Q7 done");
         query8();
+        System.out.println("Q8 done");
         query9();
+        System.out.println("Q9 done");
         query10();
+        System.out.println("Q10 done");
         query11();
+        System.out.println("Q11 done");
         query12();
+        System.out.println("Q12 done");
         query13();
+        System.out.println("Q13 done");
         query14();
-        query15();
+        System.out.println("Q14 done");
         query16();
-        query17();
+        System.out.println("Q16 done");
         query18();
+        System.out.println("Q18 done");
         query19();
-        query20();
-        query21();
+        System.out.println("Q19 done");
         query22();
+        System.out.println("Q22 done");
     }
 
     public void executeQuery(String sql) {
@@ -70,21 +78,10 @@ public class TPCHQueries {
             st = con.createStatement();
             rs = st.executeQuery(sql);
             ResultSetMetaData md = rs.getMetaData();
-            while (rs.next()) {
-                //for (int j = 1; j <= md.getColumnCount(); j++) {
-                //    System.out.print(rs.getString(j) + "\t");
-                //}
-                //System.out.println("");
-            }
+            while (rs.next());
         } catch (SQLException ex) {
             Logger.getLogger(TPCHQueries.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            //try {
-                //st.close();
-                //rs.close();
-            //} catch (SQLException ex) {
-              //  Logger.getLogger(TPCHQueries.class.getName()).log(Level.SEVERE, null, ex);
-            //}
         }
 
     }

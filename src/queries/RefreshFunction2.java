@@ -15,7 +15,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import nl.cwi.monetdb.mcl.io.BufferedMCLReader;
 
 /**
  *
@@ -51,7 +50,7 @@ public class RefreshFunction2 {
         BufferedReader br = null;
 
         try {
-            br = new BufferedMCLReader(new FileReader(path));
+            br = new BufferedReader(new FileReader(path));
             String ptr;
             while ((ptr = br.readLine()) != null) {
                 this.indexesToDelete.add(Integer.parseInt(ptr));

@@ -39,13 +39,13 @@ public class RefreshFunction1 {
         try {
             st = this.con.createStatement();
             String sql = String.format("INSERT INTO orders (o_orderkey, o_custkey, o_orderstatus, o_totalprice, o_orderdate, o_orderpriority, o_shippriority, o_comment) "
-            + "SELECT o_orderkey, o_custkey, o_orderstatus, o_totalprice, o_orderdate, o_orderpriority, o_shippriority, o_comment FROM rf1.orders%d", streamNo); // streamNo = 1, rf1.orders1
+            + "SELECT o_orderkey, o_custkey, o_orderstatus, o_totalprice, o_orderdate, o_orderpriority, o_shippriority, o_comment FROM refresh_functions.orders%d", streamNo); // streamNo = 1, refresh_functions.orders1
             st.executeUpdate(sql);
             sql = String.format("INSERT INTO lineitem (l_orderkey, l_partkey, l_suppkey, l_linenumber, l_quantity,\n"
                     + "        l_extendedprice, l_discount, l_tax, l_returnflag, l_linestatus,\n"
                     + "        l_shipdate, l_commitdate, l_receiptdate, l_shipinstruct, l_shipmode) SELECT l_orderkey, l_partkey, l_suppkey, l_linenumber, l_quantity,\n"
                     + "        l_extendedprice, l_discount, l_tax, l_returnflag, l_linestatus,\n"
-                    + "        l_shipdate, l_commitdate, l_receiptdate, l_shipinstruct, l_shipmode FROM rf1.lineitem%d", streamNo);
+                    + "        l_shipdate, l_commitdate, l_receiptdate, l_shipinstruct, l_shipmode FROM refresh_functions.lineitem%d", streamNo);
             st.executeUpdate(sql);
         } catch (SQLException ex) {
             Logger.getLogger(RefreshFunction1.class.getName()).log(Level.SEVERE, null, ex);
