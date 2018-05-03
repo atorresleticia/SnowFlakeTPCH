@@ -37,7 +37,8 @@ public class Power {
     }
 
     public void run() {
-        String path = String.format("D:\\TPCH\\DATA\\ORIGINAL\\RF\\%dGB\\delete.1", this.sf);
+//        String path = String.format("D:\\TPCH\\DATA\\ORIGINAL\\RF\\%dGB\\delete.1", this.sf);
+        String path = String.format("/home/leticia/tcc_files/DATA/ORIGINAL/RF/%dGB/delete.1", this.sf);
         rfT.getRF2().getIndexes(path);
         
         rfT.runRF1();
@@ -48,8 +49,8 @@ public class Power {
     }
     
     public void saveTimes(){
-        String rfFileName = String.format("%s_SNOW_POWER_RF_%dGB", this.sgbd, this.sf);
-        String queriesFileName = String.format("%s_SNOW_POWER_QUERIES_%dGB", this.sgbd, this.sf);
+        String rfFileName = String.format("/home/leticia/tcc_files/saidas/%d/%s_SNOW_POWER_RF_%dGB", this.sf, this.sgbd, this.sf);
+        String queriesFileName = String.format("/home/leticia/tcc_files/saidas/%d/%s_SNOW_POWER_QUERIES_%dGB", this.sf, this.sgbd, this.sf);
         
         rfT.saveRFTime(rfFileName);
         tpchQT.saveQueriesTime(queriesFileName);

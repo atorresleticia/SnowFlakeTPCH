@@ -4,13 +4,11 @@ public class TPCHCalc {
 
     private double queryTotalTime;
     private double refreshTotalTime;
-    private double powerQph;
-    private double throughputQph;
-    private double QphH;
+    private long powerQph;
+    private long throughputQph;
+    private long QphH;
 
     public TPCHCalc() {
-        this.queryTotalTime = 1;
-        this.refreshTotalTime = 1;
     }
 
     public void setSumQueryTotalTime(double[] queryTimes) {
@@ -63,34 +61,39 @@ public class TPCHCalc {
 
     public void setPowerQph(int scaleFactor) {
 
-        double timesFactor = 3600 * scaleFactor;
-        double queryTimesRefresh = this.queryTotalTime * this.refreshTotalTime;
-        double root = Math.pow(queryTimesRefresh, (1 / 15));
+        long timesFactor = 3600 * scaleFactor;
+        long queryTimesRefresh = (long) (this.queryTotalTime * this.refreshTotalTime);
+
+        System.out.println(scaleFactor + "GB: q: " + this.queryTotalTime + " rf: " + this.refreshTotalTime + "total: " + queryTimesRefresh);
+
+        long root = (long) Math.pow(queryTimesRefresh, (1 / 17));
+
+        System.out.println("R: " + root);
 
         this.powerQph = timesFactor / root;
     }
 
     public void setThroughputQph(int scaleFactor, int streams, double time) {
 
-        double timesStream = streams * 3600 * 13;
-        double timesFactor = time * scaleFactor;
+        long timesStream = streams * 3600 * 15;
+        long timesFactor = (long) (time * scaleFactor);
 
         this.throughputQph = timesStream / timesFactor;
     }
 
     public void setQphH() {
-        this.QphH = Math.sqrt(this.powerQph * this.throughputQph);
+        this.QphH = (long) Math.sqrt(this.powerQph * this.throughputQph);
     }
 
-    public double getPowerQph() {
+    public long getPowerQph() {
         return powerQph;
     }
 
-    public double getThroughputQph() {
+    public long getThroughputQph() {
         return throughputQph;
     }
 
-    public double getQphH() {
+    public long getQphH() {
         return QphH;
     }
 }

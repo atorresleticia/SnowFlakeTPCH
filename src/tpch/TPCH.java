@@ -41,27 +41,20 @@ public class TPCH {
         }
     }
 
-    private static void setModelingParams(String modeling) {
-        if (modeling.equals("n")) {
-            db = "n";
-        }
-        else if (modeling.equals("d")) {
-            db = "d";
-        }
-    }
-
     private static void setSizeParams(String size) {
-        if (size.equals("1")) {
-            scaleFactor = "1";
-            db += "1";
-        }
-        else if (size.equals("10")) {
-            scaleFactor = "10";
-            db += "10" ;
-        }
-        else if (size.equals("30")) {
-            scaleFactor = "30";
-            db += "30";
+        switch (size) {
+            case "1":
+                scaleFactor = "1";
+                db += "1";
+                break;
+            case "10":
+                scaleFactor = "10";
+                db += "10";
+                break;
+            case "30":
+                scaleFactor = "30";
+                db += "30";
+                break;
         }
     }
 
@@ -74,11 +67,6 @@ public class TPCH {
         tpchCalc.setSumQueryTotalTime(p.getQueryExecutionTime());
         tpchCalc.setSumRefreshTotalTime(p.getRefreshExecutionTime());
         System.out.println("Power Test Execution Time = " + (tpchCalc.getQueryTotalTime() + tpchCalc.getRefreshTotalTime()));
-
-        tpchCalc.setQueryTotalTime(p.getQueryExecutionTime());
-        tpchCalc.setRefreshTotalTime(p.getRefreshExecutionTime());
-        tpchCalc.setPowerQph(Integer.valueOf(scaleFactor));
-        System.out.println("Power@Size (QPH) = " + tpchCalc.getPowerQph());
     }
 
     private static void throughput(TPCHCalc tpchCalc, Connection con) {
@@ -87,10 +75,7 @@ public class TPCH {
         Throughput t = new Throughput(con, Integer.valueOf(scaleFactor), sgbd);
         t.run();
 
-        tpchCalc.setThroughputQph(Integer.valueOf(scaleFactor), t.getNoOfStreams(), t.getTime());
-
         System.out.println("Throughput Test Execution Time = " + t.getTime());
-        System.out.println("Throuthput@Size (QPH) = " + tpchCalc.getThroughputQph());
     }
 
     private static void queries(Connection con) {
@@ -108,47 +93,42 @@ public class TPCH {
     }
 
     private static void QphH(TPCHCalc tpchCalc, Connection con) {
-
         power(tpchCalc, con);
         throughput(tpchCalc, con);
-
-        tpchCalc.setQphH();
-
-        System.out.println("QphH@Size = " + tpchCalc.getQphH());
     }
 
     public static void main(String[] args) throws SQLException {
 
-        if (args.length > 4 || args.length == 0) {
+        if (args.length > 3 || args.length == 0) {
             throw new IllegalArgumentException();
         }
 
         setSGBDParams(args[0]);
-        setModelingParams(args[1]);
-        setSizeParams(args[2]);
-
-        System.out.println(args[0] + " " + args[1] + " " + args[2] + " " + args[3]);
+        db = "n";
+        setSizeParams(args[1]);
         String host = "10.81.120.217";
 
         ConnectionFactory cf = new ConnectionFactory(sgbd, db, user, password, host, port);
         Connection con = cf.getConnection();
-        System.out.println("Connection established with " + host + ": " + sgbd + " on " + db + " base");
+        System.out.println("Connection established with " + host + ": " + sgbd + " on " + scaleFactor + "GB normalized base");
 
-        if (args.length == 4) {
-            String operation = args[3];
+        if (args.length == 3) {
+            String operation = args[2];
 
-            if (operation.equals("-p")) {
-                power(new TPCHCalc(), con);
-            }
-            else if (operation.equals("-t")) {
-                throughput(new TPCHCalc(), con);
-            }
-            else if (operation.equals("-q")) {
-                queries(con);
-            }
-            else if (operation.equals("-all")) {
-                TPCHCalc tpchCalc = new TPCHCalc();
-                QphH(tpchCalc, con);
+            switch (operation) {
+                case "-p":
+                    power(new TPCHCalc(), con);
+                    break;
+                case "-t":
+                    throughput(new TPCHCalc(), con);
+                    break;
+                case "-q":
+                    queries(con);
+                    break;
+                case "-all":
+                    TPCHCalc tpchCalc = new TPCHCalc();
+                    QphH(tpchCalc, con);
+                    break;
             }
         }
         else {

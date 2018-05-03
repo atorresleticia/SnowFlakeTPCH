@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact name="snow-flake-TPCH:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/snow_flake_TPCH_jar</output-path>
+    <root id="root">
+      <element id="archive" name="snow-flake-TPCH.jar">
+        <element id="module-output" name="snow-flake-TPCH" />
+      </element>
+      <element id="library" level="module" name="monetdb-jdbc-2.27.jar" module-name="snow-flake-TPCH" />
+      <element id="library" level="module" name="postgresql-42.1.4.jar" module-name="snow-flake-TPCH" />
+    </root>
+  </artifact>
+</component>

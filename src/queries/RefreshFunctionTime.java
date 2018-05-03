@@ -39,6 +39,9 @@ public class RefreshFunctionTime {
     }   
     
     private double getRF1Time() {
+
+        System.out.print("RF1 running... ");
+
         long startTime = System.nanoTime();
         rf1.update(1);
         long endTime = System.nanoTime();
@@ -49,7 +52,9 @@ public class RefreshFunctionTime {
     }
 
     private double getRF2Time() {
-               
+
+        System.out.print("RF2 running... ");
+
         long startTime = System.nanoTime();
         rf2.delete();
         long endTime = System.nanoTime();
