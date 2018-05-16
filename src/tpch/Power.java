@@ -34,11 +34,12 @@ public class Power {
         this.tpchQT.getTpchq().setConnection(this.con);
         this.rfT.getRF1().setConnection(this.con);
         this.rfT.getRF2().setConnection(this.con);
+
     }
 
     public void run() {
-//        String path = String.format("D:\\TPCH\\DATA\\ORIGINAL\\RF\\%dGB\\delete.1", this.sf);
-        String path = String.format("/home/leticia/tcc_files/DATA/ORIGINAL/RF/%dGB/delete.1", this.sf);
+//        String path = String.format("D:\\TPCH\\DATA\\ORIGINAL\\RF\\%dGB\\delete.u1", this.sf);
+        String path = String.format("/home/leticia/tcc_files/DATA/ORIGINAL/RF/%dGB/delete.u1", this.sf);
         rfT.getRF2().getIndexes(path);
         
         rfT.runRF1();

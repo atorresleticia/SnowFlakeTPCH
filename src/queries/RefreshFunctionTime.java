@@ -48,7 +48,7 @@ public class RefreshFunctionTime {
 
         System.out.println("RF1 done.");
 
-        return (endTime - startTime) / 1000000.;
+        return (endTime - startTime) / 1000000000.;
     }
 
     private double getRF2Time() {
@@ -61,7 +61,7 @@ public class RefreshFunctionTime {
 
         System.out.println("RF2 done.");
 
-        return (endTime - startTime) / 1000000.;
+        return (endTime - startTime) / 1000000000.;
     }
     
     public void runRF1(){
